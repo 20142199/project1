@@ -1,0 +1,80 @@
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Mr Quang
+ * @param <T>
+ */
+public class Node <T>{
+    private List<Node<T>> childrent=new ArrayList<Node<T>>();
+    private Node<T> parent=null;
+    private T data=null;
+    public Node(T data){
+        this.data=data;
+    }
+    public Node(T data, Node<T> parent){
+        this.data=data;
+        this.parent=parent;
+        parent.childrent.add(this);
+    }
+    public T getData(){
+        return data;
+    }
+    public static void show(Node <String> root){
+        if(root.childrent.size()==0){
+            System.out.println(root.getData());
+        }else{
+            for(Node<String> a: root.childrent){
+                show(a);
+            }
+            System.out.println(root.getData());
+        }
+        
+    }
+    public static boolean findPath(Node <String > root, Node <String> destination){
+            ArrayList <Node<String>> al=new ArrayList();
+            ArrayList <Node<String>> save=new ArrayList();
+            save.add(root);
+            al.add(root);
+            while(!al.isEmpty()){
+                Node<String> tg=al.get(0);
+                al.remove(0);
+                if(tg==destination){
+                     return true;
+                }
+                if(tg.childrent.size()!=0){
+                    for(Node<String> n : tg.childrent){
+                        al.add(n);
+                      
+                    }
+                }
+            
+            }
+            return false;        
+    }
+    public static void main(String[] args) {
+        Node <String> a=new Node <String>("1");
+        Node <String> a1=new Node <String>("2", a);
+        Node <String> a2=new Node <String>("3", a);
+        Node <String> a3=new Node <String>("4", a1);
+        Node <String> a4=new Node <String>("7", a2);
+        Node <String> a5=new Node <String>("5", a2);
+       if(findPath(a, a4)){
+           while(a4.parent!=null){
+               System.out.println(a4.data);
+               a4=a4.parent;
+           }
+           System.out.println(a4.data);
+       }
+        //show(a);
+    }
+}
